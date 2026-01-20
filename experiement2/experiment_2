@@ -29,11 +29,17 @@ GROUP BY city
 
 -- (II)
 
-
-
-SELECT CITY, AVG(CASE WHEN PERCENTAGE>95 THEN PERCENTAGE ELSE
-NULL END) AS STUDENT_AVG  FROM Students 
+SELECT CITY,
+       CAST(
+           AVG(CASE WHEN percentage > 95 THEN percentage ELSE NULL END)
+           AS DECIMAL(5,2)
+       ) AS STUDENT_AVG
+FROM Students
 GROUP BY city
 ORDER BY STUDENT_AVG DESC;
+
+
+
+
 
 
