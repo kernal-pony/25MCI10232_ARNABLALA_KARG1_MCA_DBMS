@@ -1,159 +1,228 @@
-
-# 📘 Experiment 1 – Organizational Database Design Using SQL (DDL, DML, DCL)
-
-## 👨‍🎓 Student Details
-- **Name:** Arnab Lala  
-- **UID:** 25MCI10232  
-- **Branch:** MCA  
-- **Section:** MAM-1(A)  
-- **Semester:** 2nd  
-- **Subject:** Technical Training  
-- **Subject Code:** 25CAP-652  
-- **Date of Performance:** 6 January 2026  
+# **DBMS Lab – Worksheet 1**  
+## **Design and Implementation of Sample Database System using DDL, DML and DCL**
 
 ---
 
-## 1️⃣ Experiment
-**Title:**  
-Design and Implementation of an Organizational Database System Using PostgreSQL
+## 👨‍🎓 **Student Details**  
+**Name:** Arnab Lala  
+**UID:** 25MCI10232  
+**Branch:** MCA (AI & ML)  
+**Semester:** 2nd  
+**Section/Group:** 1/A  
+**Subject:** DBMS Lab  
+**Date of Performance:** 13/01/2026  
 
 ---
 
-## 2️⃣ Objective
-The objectives of this experiment are:
-- To understand and apply DDL commands such as CREATE, ALTER, and DROP  
-- To perform DML operations like INSERT, UPDATE, DELETE, and SELECT  
-- To implement DCL commands including CREATE ROLE, GRANT, and REVOKE  
-- To enforce referential integrity using primary and foreign keys  
-- To provide controlled and secure access using role-based privileges  
+## 🎯 **Aim of the Session**  
+To design and implement a sample database system using DDL, DML, and DCL commands for managing departments, employees, and projects, and to apply role-based access control for secure data handling.
+
+---
+## 💻 **Software Requirements**
+
+- PostgreSQL (Database Server)  
+- pgAdmin
+- Windows Operating System  
+
+---
+## 📌 **Objective of the Session**  
+- To understand the use of DDL commands to create and modify database structures.  
+- To perform DML operations such as INSERT, UPDATE, DELETE, and SELECT.  
+- To implement relationships using primary and foreign keys.  
+- To apply DCL commands to manage roles and privileges.  
+- To analyze input and output of SQL queries in a real database environment.  
 
 ---
 
-## 3️⃣ Practical / Experiment Steps  
-*(In place of experiment question)*
-
-1. Create tables for Department, Employee, and Project.  
-2. Define primary keys and foreign key relationships.  
-3. Insert sample records into all tables.  
-4. Display records to verify successful insertion.  
-5. Perform UPDATE and DELETE operations.  
-6. Create roles and assign privileges using GRANT.  
-7. Revoke selected permissions to control access.  
+## 🛠️ **Practical / Experiment Steps**  
+- Design the database schema for Department, Employee, and Project tables.  
+- Create tables using appropriate constraints.  
+- Insert sample records into tables.  
+- Perform update and delete operations.  
+- Retrieve data using SELECT queries.  
+- Create a role and grant and revoke privileges.  
+- Alter and drop database objects.  
 
 ---
 
-## 4️⃣ Procedure of the Experiment and Screenshots  
+## 🗄️ **Database Design**  
 
-### Step 1: Table Creation (DDL Commands)
-sql
-CREATE TABLE Department (
-    dept_id INT PRIMARY KEY,
-    dept_name VARCHAR(30) UNIQUE NOT NULL
+The database is designed to manage Departments, Employees, and Projects within an organization.
+
+### **Tables**  
+- Department  
+- Employee  
+- Project  
+
+### **Constraints Used**  
+- PRIMARY KEY – to uniquely identify each record  
+- FOREIGN KEY – to maintain relationships between tables  
+- NOT NULL – to avoid missing important values  
+- UNIQUE – to prevent duplicate entries  
+
+---
+# ⚙️ **Procedure of the Practical**
+
+# ⚙️ **Step 1: Table Creation (DDL)**  
+
+### **Department Table**
+```sql
+create table Department(
+Dept_id int primary key,
+Dept_name varchar(20) not null unique
 );
+```
 
-CREATE TABLE Employee (
-    emp_id INT PRIMARY KEY,
-    emp_name VARCHAR(30) NOT NULL,
-    emp_email VARCHAR(40) UNIQUE NOT NULL,
-    emp_phone VARCHAR(15) UNIQUE NOT NULL,
-    emp_address VARCHAR(50),
-    dept_id INT,
-    FOREIGN KEY (dept_id) REFERENCES Department(dept_id)
-    ON UPDATE CASCADE
-    ON DELETE SET NULL
+### **Employee Table**
+```sql
+create table Employee(
+Emp_id int primary key ,
+Emp_name varchar(20) not null,
+Emp_email varchar(20) unique not null,
+Emp_phone varchar(20) unique not null,
+Dept_id int,
+foreign key (Dept_id) references Department(Dept_id)
 );
+```
 
-CREATE TABLE Project (
-    project_id INT PRIMARY KEY,
-    project_name VARCHAR(30) NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    assigned_emp INT,
-    FOREIGN KEY (assigned_emp) REFERENCES Employee(emp_id)
-    ON UPDATE CASCADE
-    ON DELETE SET NULL
+### **Project Table**
+```sql
+create table Project(
+Proj_id integer primary key,
+Proj_name varchar(20) not null,
+Proj_startDate varchar(20) not null,
+Proj_EndDate varchar(20) not null,
+Proj_Assign_Emp int,
+foreign key (Proj_Assign_Emp) references Employee(Emp_id)
 );
-
-
----
-
-### Step 2: Insert Records (DML Commands)
-
-INSERT INTO Department VALUES
-(10, 'Research'),
-(20, 'Development'),
-(30, 'Sales'),
-(40, 'Operations');
-
-INSERT INTO Employee VALUES
-(201, 'Arjun Das', 'arjun@gmail.com', '9001112222', 'Kolkata', 20),
-(202, 'Meera Roy', 'meera@gmail.com', '9003334444', 'Delhi', 20),
-(203, 'Sahil Khan', 'sahil@gmail.com', '9005556666', 'Mumbai', 30),
-(204, 'Nina Paul', 'nina@gmail.com', '9007778888', 'Chennai', 10),
-(205, 'Vikram Jain', 'vikram@gmail.com', '9009990000', 'Pune', 40);
-
-INSERT INTO Project VALUES
-(1, 'Inventory System', '2026-01-05', '2026-06-30', 201),
-(2, 'CRM Software', '2026-02-10', '2026-07-15', 202),
-(3, 'Sales Dashboard', '2026-03-01', '2026-05-31', 203),
-(4, 'Research Portal', '2026-01-20', '2026-04-25', 204),
-(5, 'Ops Automation', '2026-02-01', '2026-08-01', 205);
-
+```
 
 ---
 
-### Step 3: Data Modification
+# 🧾 **Step 2: Data Manipulation (DML)**  
 
-UPDATE Employee
-SET dept_id = 40
-WHERE emp_id = 203;
+### **Insert into Department**
+```sql
+insert into Department (Dept_id,Dept_name)
+values
+(1, 'Human Resources'),
+(2, 'Engineering'),
+(3, 'Marketing'),
+(4, 'Finance');
+```
+<img width="613" height="347" alt="image" src="https://github.com/user-attachments/assets/9a2fa0fc-e3d9-4a69-99ca-b0863338a475" />
 
-DELETE FROM Employee WHERE emp_id = 205;
+### **Insert into Employee**
+```sql
+insert into Employee (Emp_id,Emp_name,Emp_email,Emp_phone,Dept_id)
+values
+(101, 'Amit Sharma', 'amit@gmail.com', '9876543210', 2),
+(102, 'Neha Verma', 'neha@gmail.com', '9123456780', 2),
+(103, 'Rohit Singh', 'rohit@gmail.com', '9988776655', 1),
+(104, 'Priya Mehta', 'priya@gmail.com', '9090909090', 3),
+(105, 'Ram Sen', 'Ram@gmail.com', '555555555', 4);
+```
+<img width="1064" height="273" alt="image" src="https://github.com/user-attachments/assets/b1d45099-8e57-41cf-84dd-41f46aae56bd" />
 
-
----
-
-### Step 4: Role Creation and Privilege Management (DCL Commands)
-
-CREATE ROLE HR LOGIN PASSWORD 'HR';
-
-GRANT SELECT, INSERT, UPDATE ON Employee TO HR;
-GRANT SELECT ON Department TO HR;
-GRANT SELECT, INSERT, UPDATE ON Project TO HR;
-
-REVOKE INSERT ON Employee FROM HR;
-REVOKE UPDATE ON Department FROM HR;
-
-
-
----
-
-## 5️⃣ Output Screenshots  
-<img width="334" height="236" alt="image" src="https://github.com/user-attachments/assets/68908b15-e522-4f7d-bf48-6989a66d294c" /> <br>
-<br><img width="615" height="139" alt="image" src="https://github.com/user-attachments/assets/e8e8ac82-5dcb-45c3-9e7f-ff7c6262ce39" />
-<br><img width="660" height="159" alt="image" src="https://github.com/user-attachments/assets/9236c62e-2d0a-4318-bbb7-196d2573937b" />
-<br><img width="424" height="94" alt="image" src="https://github.com/user-attachments/assets/07946c7b-acf7-4777-98c4-0c14d79922bd" />
-
-
-
-
-
-
----
-
-## 6️⃣ Learning Outcome
-After completing this experiment, I learned:
-1. How to design a relational database using multiple tables  
-2. How to apply constraints to maintain data integrity  
-3. How to perform INSERT, UPDATE, and DELETE operations  
-4. How foreign keys maintain relationships between tables  
-5. How to manage database security using roles and privileges  
+### **Insert into Project**
+```sql
+insert into Project(Proj_id, Proj_name, Proj_startDate, Proj_EndDate, Proj_Assign_Emp)
+values
+(1, 'AI Chatbot', '2026-01-01', '2026-06-30', 101),
+(2, 'E-Commerce App', '2026-02-01', '2026-07-31', 102),
+(3, 'HR Portal', '2026-03-15', '2026-05-30', 103),
+(4, 'Marketing Website', '2026-01-20', '2026-04-20', 104),
+(5, 'Finance Website', '2025-01-20', '2026-04-20', 105);
+```
+<img width="1125" height="270" alt="image" src="https://github.com/user-attachments/assets/3bf0fb00-0831-49ef-98b4-90acd17cf098" />
 
 ---
 
-## 7️⃣ Tools / Technologies Used
-- **Database:** PostgreSQL  
-- **GUI Tool:** pgAdmin  
-- **Query Language:** SQL (DDL, DML, DCL)
+# ✏️ **Step 3: UPDATE Operation**  
+```sql
+update Employee set Dept_id=4 where Emp_id=103;
+```
+<img width="681" height="175" alt="image" src="https://github.com/user-attachments/assets/44bc8930-5e9f-4e41-a680-4ae90e679b03" />
+
+---
+
+# 🗑️ **Step 4: DELETE Operations**  
+
+(Employee 105 was assigned to a project, so the project record was deleted first.)
+
+```sql
+delete from Project where Proj_Assign_Emp=105;
+delete from Employee where Emp_id=105;
+```
+<img width="1125" height="236" alt="image" src="https://github.com/user-attachments/assets/5f1dfd6d-a0d4-4397-83ce-2ef5fec265dc" />
+<img width="1061" height="239" alt="image" src="https://github.com/user-attachments/assets/2053e1d5-f20f-4b3a-bd82-0d57519f2a28" />
+
+---
+
+# 🔐 **Step 5: Create Role and Assign Privileges**
+
+### **Create Role**
+```sql
+create role CEO login password 'CEO';
+```
+<img width="834" height="502" alt="image" src="https://github.com/user-attachments/assets/cbac5c37-f9b3-42e7-bcfa-e16e31f0098b" />
+<img width="883" height="59" alt="image" src="https://github.com/user-attachments/assets/f486ad9e-05a9-4967-b3c9-7218ee585537" />
+
+### **Grant SELECT Privileges**
+```sql
+grant select on Employee, Department, Project to CEO;
+```
+
+### **Revoke Privilege**
+```sql
+revoke select on Department from CEO;
+```
+
+---
+
+# 🏗️ **Step 6: Schema Modification**
+
+### **Add Column**
+```sql
+alter table Employee add Address varchar(30);
+```
+<img width="1125" height="205" alt="image" src="https://github.com/user-attachments/assets/f6187e70-e176-4308-a0c0-d9219ad9ce5d" />
+
+### **Drop Table**
+```sql
+drop table Project;
+```
+<img width="541" height="227" alt="image" src="https://github.com/user-attachments/assets/70c9e752-6f25-4932-a467-1ce1ab9d1d2b" />
+
+---
+## 📥📤 I/O Analysis (Input / Output)
+
+### 🔹 Input
+- Department, Employee, and Project table creation queries  
+- Records inserted into all tables using INSERT commands  
+- Update query to modify employee department  
+- Delete queries to remove project and employee records  
+- Role creation and privilege assignment queries  
+- ALTER and DROP table commands  
+
+### 🔹 Output
+- Department, Employee, and Project tables created successfully  
+- Records inserted, updated, and deleted correctly  
+- Referential integrity maintained between tables  
+- Data displayed correctly using SELECT queries  
+- Role-based access verified using GRANT and REVOKE  
+- Table structure modified and Project table dropped successfully  
+
+📸 Screenshots of execution and obtained results are attached.
+
+---
+
+## 📘 **Learning Outcomes**  
+- Understood the basics of relational database design using tables, keys, and relationships.  
+- Learned to apply primary and foreign key constraints to maintain data integrity.  
+- Gained hands-on experience with INSERT, UPDATE, and DELETE operations.  
+- Understood role-based access control using GRANT and REVOKE.  
+- Learned how to create read-only users for secure data access.  
+- Practiced ALTER TABLE and DROP TABLE commands for schema management.  
 
 ---
